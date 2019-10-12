@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="C/C++,数据结构,串,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="我们知道物理存储分为顺序存储和链式存储，串的顺序存储包括定长顺序存储和堆分配存储两种，由于后者是动态分配内存的，使用起来更灵活，因此我将把串的堆分配存储结构与其操作实现分享各位小伙伴~">
+<meta name="keywords" content="C&#x2F;C++,数据结构,串">
+<meta property="og:type" content="article">
+<meta property="og:title" content="串的堆分配存储表示与操作实现">
+<meta property="og:url" content="http://yoursite.com/2019/10/12/数据结构之串的物理结构与操作实现/index.html">
+<meta property="og:site_name" content="常磐市">
+<meta property="og:description" content="我们知道物理存储分为顺序存储和链式存储，串的顺序存储包括定长顺序存储和堆分配存储两种，由于后者是动态分配内存的，使用起来更灵活，因此我将把串的堆分配存储结构与其操作实现分享各位小伙伴~">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2019/10/12/数据结构之串的物理结构与操作实现/01.png">
+<meta property="og:updated_time" content="2019-10-12T14:07:32.400Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="串的堆分配存储表示与操作实现">
+<meta name="twitter:description" content="我们知道物理存储分为顺序存储和链式存储，串的顺序存储包括定长顺序存储和堆分配存储两种，由于后者是动态分配内存的，使用起来更灵活，因此我将把串的堆分配存储结构与其操作实现分享各位小伙伴~">
+<meta name="twitter:image" content="http://yoursite.com/2019/10/12/数据结构之串的物理结构与操作实现/01.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"flipBounceXIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/10/12/数据结构之串的物理结构与操作实现/">
+
+
+
+
+
+  <title>串的堆分配存储表示与操作实现 | 常磐市</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">常磐市</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于我
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-myharvest">
+          <a href="/myharvest/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>
+            
+            心得
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/12/数据结构之串的物理结构与操作实现/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="圣★哥">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="常磐市">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">串的堆分配存储表示与操作实现</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-10-12T21:24:14+08:00">
+                2019-10-12
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2019-10-12T22:07:32+08:00">
+                2019-10-12
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/数据结构/" itemprop="url" rel="index">
+                    <span itemprop="name">数据结构</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/10/12/数据结构之串的物理结构与操作实现/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/10/12/数据结构之串的物理结构与操作实现/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 浏览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>我们知道物理存储分为<strong>顺序存储</strong>和<strong>链式存储</strong>，串的顺序存储包括定长顺序存储和<strong>堆分配</strong>存储两种，由于后者是动态分配内存的，使用起来更灵活，因此我将把串的堆分配存储结构与其操作实现分享各位小伙伴~<a id="more"></a>(串的链式存储不灵活且操作复杂，因此很少用，在此就不分享了)</p>
+<h3 id="串的ADT-Abstract-Data-Type-抽象数据类型-的实现"><a href="#串的ADT-Abstract-Data-Type-抽象数据类型-的实现" class="headerlink" title="串的ADT(Abstract Data Type-抽象数据类型)的实现"></a>串的ADT(Abstract Data Type-抽象数据类型)的实现</h3><h4 id="1-堆分配存储表示"><a href="#1-堆分配存储表示" class="headerlink" title="#1 堆分配存储表示"></a>#1 堆分配存储表示</h4><h5 id="String-h-数据对象和关系表示"><a href="#String-h-数据对象和关系表示" class="headerlink" title="String.h (数据对象和关系表示)"></a>String.h (数据对象和关系表示)</h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//===============ADT String的表示======================</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> HSTRING</span></span><br><span class="line">	<span class="meta">#<span class="meta-keyword">define</span> HSTRING</span></span><br><span class="line">	<span class="keyword">typedef</span> <span class="keyword">int</span> Status;</span><br><span class="line">	<span class="comment">//==========串的堆分配存储表示===========l</span></span><br><span class="line">	<span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span>&#123;</span></span><br><span class="line">		<span class="keyword">char</span>* ch;</span><br><span class="line">		<span class="keyword">int</span> length;</span><br><span class="line">	&#125;HString;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+
+<h5 id="String-Fun-h-基本操作声明"><a href="#String-Fun-h-基本操作声明" class="headerlink" title="String_Fun.h (基本操作声明)"></a>String_Fun.h (基本操作声明)</h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"String.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> FUN</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> FUN</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">StrInit</span><span class="params">(HString&amp;S)</span></span>;<span class="comment">//用于给指针置空，防止野指针出现</span></span><br><span class="line"><span class="function">Status <span class="title">StrAssign</span><span class="params">(HString&amp; T,<span class="keyword">char</span>* chars)</span></span>;<span class="comment">//生成一个其值等于串常量的串</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">StrLength</span><span class="params">(HString S)</span></span>;<span class="comment">//返回字符串长</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">StrCompare</span><span class="params">(HString S,HString T)</span></span>;<span class="comment">//按字典序比较两个字符串大小</span></span><br><span class="line"><span class="function">Status <span class="title">ClearString</span><span class="params">(HString&amp; S)</span></span>;<span class="comment">//清空字符串</span></span><br><span class="line"><span class="function">Status <span class="title">ConCat</span><span class="params">(HString &amp;T,HString S1,HString S2)</span></span>;<span class="comment">//合并串S1和串S2，生成串T</span></span><br><span class="line"><span class="function">Status <span class="title">SubString</span><span class="params">(HString&amp; Sub,HString S,<span class="keyword">int</span> pos,<span class="keyword">int</span> len)</span></span>;</span><br><span class="line"><span class="comment">//返回从pos开始，长度为len的S的子串</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+
+<h5 id="String-Fun-cpp-基本操作实现"><a href="#String-Fun-cpp-基本操作实现" class="headerlink" title="String_Fun.cpp (基本操作实现)"></a>String_Fun.cpp (基本操作实现)</h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> PRE_LIST</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PRE_LIST</span></span><br><span class="line">	<span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">"String.h"</span></span></span><br><span class="line">	<span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"String_Fun.h"</span></span></span><br><span class="line">	<span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;malloc.h&gt;</span></span></span><br><span class="line">	<span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line">	<span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;windows.h&gt;</span></span></span><br><span class="line">	<span class="meta">#<span class="meta-keyword">define</span> ERROR 0</span></span><br><span class="line">	<span class="meta">#<span class="meta-keyword">define</span> OVERFLOW -2</span></span><br><span class="line">	<span class="meta">#<span class="meta-keyword">define</span> OK 1</span></span><br><span class="line">	<span class="meta">#<span class="meta-keyword">define</span> INFEASIBLE -1</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">	typedef struct&#123;</span></span><br><span class="line"><span class="comment">		char* ch;</span></span><br><span class="line"><span class="comment">		int length;</span></span><br><span class="line"><span class="comment">	&#125;HString;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="comment">//------------------基本操作的实现-----------------</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">StrInit</span><span class="params">(HString&amp; S)</span></span>&#123; </span><br><span class="line">	S.ch=<span class="literal">NULL</span>;</span><br><span class="line">	S.length=<span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">Status <span class="title">StrAssign</span><span class="params">(HString &amp;T,<span class="keyword">char</span>* chars)</span></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(T.ch) <span class="built_in">free</span>(T.ch); </span><br><span class="line">	<span class="keyword">if</span>(!chars)&#123;</span><br><span class="line">		T.ch=<span class="literal">NULL</span>;</span><br><span class="line">		T.length=<span class="number">0</span>;</span><br><span class="line">		<span class="keyword">return</span> OK;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">int</span> i;</span><br><span class="line">	<span class="keyword">char</span>* c=<span class="literal">NULL</span>;</span><br><span class="line">	<span class="keyword">for</span>(c=chars,i=<span class="number">0</span>;*c;i++,c++);</span><br><span class="line">	<span class="keyword">if</span>(!i)&#123;T.ch=<span class="literal">NULL</span>;T.length=<span class="number">0</span>; <span class="keyword">return</span> OK;&#125;</span><br><span class="line">	<span class="comment">//if(!(T.ch=(char*)malloc(sizeof(char)*(i+1)))) exit(OVERFLOW); </span></span><br><span class="line">      <span class="comment">//多个'\0'字符，但后来发现不要多申请空间，否则进行合并等操作时还要考</span></span><br><span class="line">      <span class="comment">//虑跳过'\0'字符，这显然使得操作变复杂了</span></span><br><span class="line">	<span class="keyword">if</span>(!(T.ch=(<span class="keyword">char</span>*)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="keyword">char</span>)*i))) <span class="built_in">exit</span>(OVERFLOW);</span><br><span class="line">	c=chars;<span class="comment">//reset</span></span><br><span class="line">	T.length=i;</span><br><span class="line">	i=<span class="number">0</span>;</span><br><span class="line">	<span class="keyword">while</span>(*c)&#123;</span><br><span class="line">		T.ch[i++]=*c++;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//T.ch[i]='\0';</span></span><br><span class="line">	<span class="keyword">return</span> OK;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">StrLength</span><span class="params">(HString S)</span></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> S.length;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">StrCompare</span><span class="params">(HString S1,HString S2)</span></span>&#123;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;S1.length&amp;&amp;i&lt;S2.length;i++)&#123;</span><br><span class="line">		<span class="keyword">if</span>(S1.ch[i]!=S2.ch[i]) <span class="keyword">return</span> S1.ch[i]-S2.ch[i];</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> S1.length-S2.length;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">Status <span class="title">ClearString</span><span class="params">(HString&amp; S)</span></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(!S.ch) <span class="keyword">return</span> OK;</span><br><span class="line">	<span class="keyword">return</span> (<span class="built_in">free</span>(S.ch),S.ch=<span class="literal">NULL</span>,S.length=<span class="number">0</span>,OK);<span class="comment">//S.ch=NULL防野指针</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//由此可知实现该操作不能使字符串末尾为'\0'</span></span><br><span class="line"><span class="function">Status <span class="title">ConCat</span><span class="params">(HString &amp;T,HString S1,HString S2)</span></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(T.ch) <span class="built_in">free</span>(T.ch);</span><br><span class="line">	<span class="comment">//if(!(T.ch=(char*)malloc(sizeof(char)*(T.length+1)))) exit(OVERFLOW);</span></span><br><span class="line">      <span class="comment">//多的1个空间用于存储'\0'</span></span><br><span class="line">     <span class="keyword">if</span>(!(T.ch=(<span class="keyword">char</span>*)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="keyword">char</span>)*(S1.length+S2.length))))<span class="built_in">exit</span>(OVERFLOW);</span><br><span class="line">	T.length=S1.length+S2.length;</span><br><span class="line">	<span class="keyword">char</span>* c=<span class="literal">NULL</span>;</span><br><span class="line">	<span class="keyword">int</span> i;</span><br><span class="line">	<span class="comment">/*正确写法*/</span></span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;S1.length;i++)</span><br><span class="line">		T.ch[i]=S1.ch[i];</span><br><span class="line">	<span class="keyword">for</span>(;i&lt;T.length;i++)</span><br><span class="line">		T.ch[i]=S2.ch[i-S1.length];</span><br><span class="line">	<span class="comment">/* 错误写法*/</span></span><br><span class="line">	<span class="comment">//for(i=0,c=S1.ch;*c;T.ch[i++]=*c++); //会越界，因为串没有用'\0'封闭</span></span><br><span class="line">	<span class="comment">//for(c=S2.ch;*c;T.ch[i++]=*c++);//会越界，因为串没有用'\0'封闭</span></span><br><span class="line">	<span class="comment">//T.ch[i]='\0';</span></span><br><span class="line">	<span class="keyword">return</span> OK;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">Status <span class="title">SubString</span><span class="params">(HString &amp;Sub,HString S,<span class="keyword">int</span> pos,<span class="keyword">int</span> len)</span></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(pos&lt;<span class="number">1</span>||pos&gt;StrLength(S)||len&lt;<span class="number">0</span>||len&gt;StrLength(S)-pos+<span class="number">1</span>) <span class="keyword">return</span> ERROR;</span><br><span class="line">	<span class="keyword">if</span>(Sub.ch) <span class="built_in">free</span>(Sub.ch);</span><br><span class="line">	<span class="keyword">if</span>(!(Sub.ch=(<span class="keyword">char</span>*)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="keyword">char</span>)*len))) <span class="built_in">exit</span>(OVERFLOW);</span><br><span class="line">	<span class="keyword">char</span>* c=<span class="literal">NULL</span>;</span><br><span class="line">	<span class="keyword">int</span> i;</span><br><span class="line">	<span class="comment">//for(i=0,*c=S.ch[pos-1];c-(S.ch+pos-1)&lt;len;Sub.ch[i++]=*c++);</span></span><br><span class="line">      <span class="comment">//*c=S.ch[pos-1]有问题，因为c本身没申请堆内存，不能存储值，此处用作一个指针</span></span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">0</span>,c=S.ch+pos<span class="number">-1</span>;c-(S.ch+pos<span class="number">-1</span>)&lt;len;Sub.ch[i++]=*c++);</span><br><span class="line">      <span class="comment">//这句没问题，毕竟有长度限制，不会越界</span></span><br><span class="line">	Sub.length=len;</span><br><span class="line">	<span class="keyword">return</span> OK;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="test1-cpp-基本操作的测试"><a href="#test1-cpp-基本操作的测试" class="headerlink" title="test1.cpp (基本操作的测试)"></a>test1.cpp (基本操作的测试)</h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">"String.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"String_Fun.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">PrintStr</span><span class="params">(HString S)</span></span>&#123;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;StrLength(S);i++)</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"%c"</span>,S.ch[i]);</span><br><span class="line">	<span class="comment">//printf("%s",S1.ch);//慎用!! %s将对一个没有'\0'休止的char*变量输出，</span></span><br><span class="line">      <span class="comment">//这很可能使得正常输出后面跟乱码</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*基本操作测试*/</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	HString S1,S2,S3;</span><br><span class="line">	<span class="comment">//一开始一定要把HString::ch置为NULL，否则它会成为野指针，</span></span><br><span class="line">      <span class="comment">//使得if(T.ch)条件满足而执行free()出现错误</span></span><br><span class="line">	<span class="comment">/* StrInit(HString&amp;) Essential*/</span></span><br><span class="line">	StrInit(S1);</span><br><span class="line">	StrInit(S2);</span><br><span class="line">	StrInit(S3);</span><br><span class="line">	<span class="comment">/**********/</span></span><br><span class="line">	<span class="comment">//StrInit(S3);</span></span><br><span class="line">	StrAssign(S1,<span class="string">"HelloWorld"</span>);</span><br><span class="line">	StrAssign(S2,<span class="string">"I'm Sheng!"</span>);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"S1:"</span>); PrintStr(S1); <span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"S2:"</span>); PrintStr(S2); <span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"Use StrLength(HString):\n"</span>);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"The length of S1 is %d.\n</span></span><br><span class="line"><span class="string">      The length of S2 is %d.\n"</span>,StrLength(S1),StrLength(S2));</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"Use ClearString(S1):\n"</span>);</span><br><span class="line">	ClearString(S1);</span><br><span class="line">	<span class="keyword">if</span>(!S1.ch) <span class="built_in">printf</span>(<span class="string">"After the clear,S1 refers to NULL.\n"</span>);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"Use StrAssign(HString&amp;,char*) for S1,S2:\n"</span>);</span><br><span class="line">	StrAssign(S1,<span class="string">"String is so good"</span>);</span><br><span class="line">	StrAssign(S2,<span class="string">"that we should learn it well."</span>);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"S1:"</span>); PrintStr(S1); <span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"S2:"</span>); PrintStr(S2); <span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"Use Concat(S3,S1,S2):\n"</span>);</span><br><span class="line">	ConCat(S3,S1,S2);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"S3:"</span>); PrintStr(S3); <span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"Use StrCompare(S1,S2):\n"</span>);</span><br><span class="line">	<span class="keyword">int</span> a;</span><br><span class="line">	(a=StrCompare(S1,S2))&gt;=<span class="number">0</span>?a==<span class="number">0</span>?<span class="built_in">printf</span>(<span class="string">"S1 and S2 are the same.\n"</span>):</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"S1 is bigger than S2.\n"</span>):<span class="built_in">printf</span>(<span class="string">"S1 is smaller than S2.\n"</span>);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"Use SubString(S2,S1,11,7):\n"</span>);</span><br><span class="line">	SubString(S2,S1,<span class="number">11</span>,<span class="number">7</span>);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"S2:"</span>);</span><br><span class="line">	PrintStr(S2);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="测试结果"><a href="#测试结果" class="headerlink" title="测试结果"></a>测试结果</h5><img src="/2019/10/12/数据结构之串的物理结构与操作实现/01.png" title="测试输出截图">
+
+<p>由于作者很懒，代码中的一些细节仅仅用几行注释标注，不再详述。但这些注释其实映射了我写程序的心路历程(其实是我犯的一些错误))，这过程中我遇到很多疑惑，好在我通过频繁的Debug以及查阅资料，最终解决了大部分疑惑，于是也就有了上面一行行绿(灰)色的标注。希望这些注释能引起你我的共鸣。<br>有什么问题欢迎在评论区讨♂论。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/C-C/" rel="tag"># C/C++</a>
+          
+            <a href="/tags/数据结构/" rel="tag"># 数据结构</a>
+          
+            <a href="/tags/串/" rel="tag"># 串</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/10/11/发现F01/" rel="next" title="发现#01 --n与递归的神奇反应">
+                <i class="fa fa-chevron-left"></i> 发现#01 --n与递归的神奇反应
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.gif" alt="圣★哥">
+            
+              <p class="site-author-name" itemprop="name">圣★哥</p>
+              <p class="site-description motion-element" itemprop="description">新家装修ing......</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/InvincibleGuy777" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友链
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://50er.github.io" title="小三" target="_blank">小三</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#串的ADT-Abstract-Data-Type-抽象数据类型-的实现"><span class="nav-number">1.</span> <span class="nav-text">串的ADT(Abstract Data Type-抽象数据类型)的实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-堆分配存储表示"><span class="nav-number">1.1.</span> <span class="nav-text">#1 堆分配存储表示</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#String-h-数据对象和关系表示"><span class="nav-number">1.1.1.</span> <span class="nav-text">String.h (数据对象和关系表示)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#String-Fun-h-基本操作声明"><span class="nav-number">1.1.2.</span> <span class="nav-text">String_Fun.h (基本操作声明)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#String-Fun-cpp-基本操作实现"><span class="nav-number">1.1.3.</span> <span class="nav-text">String_Fun.cpp (基本操作实现)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#test1-cpp-基本操作的测试"><span class="nav-number">1.1.4.</span> <span class="nav-text">test1.cpp (基本操作的测试)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#测试结果"><span class="nav-number">1.1.5.</span> <span class="nav-text">测试结果</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">圣★哥</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      
+	  <span id="busuanzi_container_site_uv">本站访客数<span id="busuanzi_value_site_uv"></span>人次</span>
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 访问总量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/canvas_lines.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'ChB3kWVeyPlnap99leLRnY0y-gzGzoHsz',
+        appKey: '9rn6CmgRPCXgW2jvwj0zfGIH',
+        placeholder: '请开始你的表演~>o<',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+  <script type="text/javascript" src="/js/src/exturl.js?v=5.1.4"></script>
+
+
+</body>
+</html>
