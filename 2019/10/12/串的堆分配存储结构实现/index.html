@@ -123,20 +123,18 @@
 
 
 
-<meta name="description" content="我们知道物理存储分为顺序存储和链式存储，串的顺序存储包括定长顺序存储和堆分配存储两种，由于后者是动态分配内存的，使用起来更灵活，因此我将把串的堆分配存储结构与其操作实现分享各位小伙伴~">
+<meta name="description" content="我们知道物理结构分为顺序存储结构和链式存储结构，串的顺序存储包括定长顺序存储和堆分配存储两种，由于后者是动态分配内存的，使用起来更灵活，因此我将把串的堆分配存储结构与其操作实现分享各位小伙伴~">
 <meta name="keywords" content="C&#x2F;C++,数据结构,串">
 <meta property="og:type" content="article">
 <meta property="og:title" content="串的堆分配存储表示与操作实现">
-<meta property="og:url" content="http://yoursite.com/2019/10/12/数据结构之串的物理结构与操作实现/index.html">
+<meta property="og:url" content="http://yoursite.com/2019/10/12/串的堆分配存储结构实现/index.html">
 <meta property="og:site_name" content="常磐市">
-<meta property="og:description" content="我们知道物理存储分为顺序存储和链式存储，串的顺序存储包括定长顺序存储和堆分配存储两种，由于后者是动态分配内存的，使用起来更灵活，因此我将把串的堆分配存储结构与其操作实现分享各位小伙伴~">
+<meta property="og:description" content="我们知道物理结构分为顺序存储结构和链式存储结构，串的顺序存储包括定长顺序存储和堆分配存储两种，由于后者是动态分配内存的，使用起来更灵活，因此我将把串的堆分配存储结构与其操作实现分享各位小伙伴~">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://yoursite.com/2019/10/12/数据结构之串的物理结构与操作实现/01.png">
-<meta property="og:updated_time" content="2019-10-12T14:07:32.400Z">
+<meta property="og:updated_time" content="2019-10-12T14:13:57.935Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="串的堆分配存储表示与操作实现">
-<meta name="twitter:description" content="我们知道物理存储分为顺序存储和链式存储，串的顺序存储包括定长顺序存储和堆分配存储两种，由于后者是动态分配内存的，使用起来更灵活，因此我将把串的堆分配存储结构与其操作实现分享各位小伙伴~">
-<meta name="twitter:image" content="http://yoursite.com/2019/10/12/数据结构之串的物理结构与操作实现/01.png">
+<meta name="twitter:description" content="我们知道物理结构分为顺序存储结构和链式存储结构，串的顺序存储包括定长顺序存储和堆分配存储两种，由于后者是动态分配内存的，使用起来更灵活，因此我将把串的堆分配存储结构与其操作实现分享各位小伙伴~">
 
 
 
@@ -166,7 +164,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/10/12/数据结构之串的物理结构与操作实现/">
+  <link rel="canonical" href="http://yoursite.com/2019/10/12/串的堆分配存储结构实现/">
 
 
 
@@ -276,16 +274,6 @@
           </a>
         </li>
       
-        
-        <li class="menu-item menu-item-myharvest">
-          <a href="/myharvest/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>
-            
-            心得
-          </a>
-        </li>
-      
 
       
     </ul>
@@ -319,7 +307,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/12/数据结构之串的物理结构与操作实现/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/12/串的堆分配存储结构实现/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="圣★哥">
@@ -364,7 +352,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-10-12T22:07:32+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2019-10-12T22:13:57+08:00">
                 2019-10-12
               </time>
             
@@ -401,8 +389,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/10/12/数据结构之串的物理结构与操作实现/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2019/10/12/数据结构之串的物理结构与操作实现/" itemprop="commentCount"></span>
+                <a href="/2019/10/12/串的堆分配存储结构实现/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/10/12/串的堆分配存储结构实现/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -435,7 +423,7 @@
       
 
       
-        <p>我们知道物理存储分为<strong>顺序存储</strong>和<strong>链式存储</strong>，串的顺序存储包括定长顺序存储和<strong>堆分配</strong>存储两种，由于后者是动态分配内存的，使用起来更灵活，因此我将把串的堆分配存储结构与其操作实现分享各位小伙伴~<a id="more"></a>(串的链式存储不灵活且操作复杂，因此很少用，在此就不分享了)</p>
+        <p>我们知道物理结构分为<strong>顺序存储结构</strong>和<strong>链式存储结构</strong>，串的顺序存储包括定长顺序存储和<strong>堆分配</strong>存储两种，由于后者是动态分配内存的，使用起来更灵活，因此我将把串的堆分配存储结构与其操作实现分享各位小伙伴~<a id="more"></a>(串的链式存储不灵活且操作复杂，因此很少用，在此就不分享了)</p>
 <h3 id="串的ADT-Abstract-Data-Type-抽象数据类型-的实现"><a href="#串的ADT-Abstract-Data-Type-抽象数据类型-的实现" class="headerlink" title="串的ADT(Abstract Data Type-抽象数据类型)的实现"></a>串的ADT(Abstract Data Type-抽象数据类型)的实现</h3><h4 id="1-堆分配存储表示"><a href="#1-堆分配存储表示" class="headerlink" title="#1 堆分配存储表示"></a>#1 堆分配存储表示</h4><h5 id="String-h-数据对象和关系表示"><a href="#String-h-数据对象和关系表示" class="headerlink" title="String.h (数据对象和关系表示)"></a>String.h (数据对象和关系表示)</h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//===============ADT String的表示======================</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> HSTRING</span></span><br><span class="line">	<span class="meta">#<span class="meta-keyword">define</span> HSTRING</span></span><br><span class="line">	<span class="keyword">typedef</span> <span class="keyword">int</span> Status;</span><br><span class="line">	<span class="comment">//==========串的堆分配存储表示===========l</span></span><br><span class="line">	<span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span>&#123;</span></span><br><span class="line">		<span class="keyword">char</span>* ch;</span><br><span class="line">		<span class="keyword">int</span> length;</span><br><span class="line">	&#125;HString;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
 
 <h5 id="String-Fun-h-基本操作声明"><a href="#String-Fun-h-基本操作声明" class="headerlink" title="String_Fun.h (基本操作声明)"></a>String_Fun.h (基本操作声明)</h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"String.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> FUN</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> FUN</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">StrInit</span><span class="params">(HString&amp;S)</span></span>;<span class="comment">//用于给指针置空，防止野指针出现</span></span><br><span class="line"><span class="function">Status <span class="title">StrAssign</span><span class="params">(HString&amp; T,<span class="keyword">char</span>* chars)</span></span>;<span class="comment">//生成一个其值等于串常量的串</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">StrLength</span><span class="params">(HString S)</span></span>;<span class="comment">//返回字符串长</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">StrCompare</span><span class="params">(HString S,HString T)</span></span>;<span class="comment">//按字典序比较两个字符串大小</span></span><br><span class="line"><span class="function">Status <span class="title">ClearString</span><span class="params">(HString&amp; S)</span></span>;<span class="comment">//清空字符串</span></span><br><span class="line"><span class="function">Status <span class="title">ConCat</span><span class="params">(HString &amp;T,HString S1,HString S2)</span></span>;<span class="comment">//合并串S1和串S2，生成串T</span></span><br><span class="line"><span class="function">Status <span class="title">SubString</span><span class="params">(HString&amp; Sub,HString S,<span class="keyword">int</span> pos,<span class="keyword">int</span> len)</span></span>;</span><br><span class="line"><span class="comment">//返回从pos开始，长度为len的S的子串</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
@@ -444,7 +432,7 @@
 
 <h5 id="test1-cpp-基本操作的测试"><a href="#test1-cpp-基本操作的测试" class="headerlink" title="test1.cpp (基本操作的测试)"></a>test1.cpp (基本操作的测试)</h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">"String.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"String_Fun.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">PrintStr</span><span class="params">(HString S)</span></span>&#123;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;StrLength(S);i++)</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"%c"</span>,S.ch[i]);</span><br><span class="line">	<span class="comment">//printf("%s",S1.ch);//慎用!! %s将对一个没有'\0'休止的char*变量输出，</span></span><br><span class="line">      <span class="comment">//这很可能使得正常输出后面跟乱码</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*基本操作测试*/</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	HString S1,S2,S3;</span><br><span class="line">	<span class="comment">//一开始一定要把HString::ch置为NULL，否则它会成为野指针，</span></span><br><span class="line">      <span class="comment">//使得if(T.ch)条件满足而执行free()出现错误</span></span><br><span class="line">	<span class="comment">/* StrInit(HString&amp;) Essential*/</span></span><br><span class="line">	StrInit(S1);</span><br><span class="line">	StrInit(S2);</span><br><span class="line">	StrInit(S3);</span><br><span class="line">	<span class="comment">/**********/</span></span><br><span class="line">	<span class="comment">//StrInit(S3);</span></span><br><span class="line">	StrAssign(S1,<span class="string">"HelloWorld"</span>);</span><br><span class="line">	StrAssign(S2,<span class="string">"I'm Sheng!"</span>);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"S1:"</span>); PrintStr(S1); <span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"S2:"</span>); PrintStr(S2); <span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"Use StrLength(HString):\n"</span>);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"The length of S1 is %d.\n</span></span><br><span class="line"><span class="string">      The length of S2 is %d.\n"</span>,StrLength(S1),StrLength(S2));</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"Use ClearString(S1):\n"</span>);</span><br><span class="line">	ClearString(S1);</span><br><span class="line">	<span class="keyword">if</span>(!S1.ch) <span class="built_in">printf</span>(<span class="string">"After the clear,S1 refers to NULL.\n"</span>);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"Use StrAssign(HString&amp;,char*) for S1,S2:\n"</span>);</span><br><span class="line">	StrAssign(S1,<span class="string">"String is so good"</span>);</span><br><span class="line">	StrAssign(S2,<span class="string">"that we should learn it well."</span>);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"S1:"</span>); PrintStr(S1); <span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"S2:"</span>); PrintStr(S2); <span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"Use Concat(S3,S1,S2):\n"</span>);</span><br><span class="line">	ConCat(S3,S1,S2);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"S3:"</span>); PrintStr(S3); <span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"Use StrCompare(S1,S2):\n"</span>);</span><br><span class="line">	<span class="keyword">int</span> a;</span><br><span class="line">	(a=StrCompare(S1,S2))&gt;=<span class="number">0</span>?a==<span class="number">0</span>?<span class="built_in">printf</span>(<span class="string">"S1 and S2 are the same.\n"</span>):</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"S1 is bigger than S2.\n"</span>):<span class="built_in">printf</span>(<span class="string">"S1 is smaller than S2.\n"</span>);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"Use SubString(S2,S1,11,7):\n"</span>);</span><br><span class="line">	SubString(S2,S1,<span class="number">11</span>,<span class="number">7</span>);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"S2:"</span>);</span><br><span class="line">	PrintStr(S2);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h5 id="测试结果"><a href="#测试结果" class="headerlink" title="测试结果"></a>测试结果</h5><img src="/2019/10/12/数据结构之串的物理结构与操作实现/01.png" title="测试输出截图">
+<h5 id="测试结果"><a href="#测试结果" class="headerlink" title="测试结果"></a>测试结果</h5>
 
 <p>由于作者很懒，代码中的一些细节仅仅用几行注释标注，不再详述。但这些注释其实映射了我写程序的心路历程(其实是我犯的一些错误))，这过程中我遇到很多疑惑，好在我通过频繁的Debug以及查阅资料，最终解决了大部分疑惑，于是也就有了上面一行行绿(灰)色的标注。希望这些注释能引起你我的共鸣。<br>有什么问题欢迎在评论区讨♂论。</p>
 
@@ -571,7 +559,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">5</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
